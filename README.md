@@ -28,3 +28,12 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ```bash
 npm install vue-apollo graphql@15.8.0 apollo-client apollo-link apollo-link-http apollo-cache-inmemory graphql-tag
 ```
+
+## Install Codegen
+
+```bash
+npm install @graphql-codegen/cli -D
+npm install @graphql-codegen/typescript -D
+```
+
+→ Create file [./codegen.yml](./codegen.yml)
