@@ -1,6 +1,6 @@
 {
   "name": "Django GraphQL",
-  "schemaPath": "graphql/schema.graphql",
+  "schemaPath": "src/api/schema.graphql",
   "extensions": {
     "endpoints": {
       "Default GraphQL Endpoint": {

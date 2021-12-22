@@ -1,0 +1,14 @@
+query PostQuery($id: ID!) {
+    postDetail(id: $id) {
+        id
+        name,
+        text,
+        image,
+        category {
+            name
+        },
+        keywords {
+            name
+        }
+    }
+}

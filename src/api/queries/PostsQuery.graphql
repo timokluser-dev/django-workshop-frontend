@@ -1,0 +1,14 @@
+query PostsQuery {
+    postList {
+        id
+        name,
+        text,
+        image,
+        category {
+            name
+        },
+        keywords {
+            name
+        }
+    }
+}

@@ -1,6 +1,6 @@
 # codegen.yml
-schema: graphql/schema.graphql
+schema: src/api/schema.graphql
 generates:
-  types/backend.d.ts:
+  src/api/types/backend.d.ts:
     plugins:
       - '@graphql-codegen/typescript'
