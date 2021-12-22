@@ -13,9 +13,7 @@ import PostsContainer from '@/containers/PostsContainer.vue';
     PostsContainer,
   },
 })
-export default class Home extends Vue {
-}
+export default class Home extends Vue {}
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

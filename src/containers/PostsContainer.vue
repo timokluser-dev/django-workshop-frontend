@@ -10,13 +10,13 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import {PostType} from "@/api/types/backend";
-import PostComponent from "@/components/PostComponent.vue";
+import {PostType} from '@/api/types/backend';
+import PostComponent from '@/components/PostComponent.vue';
 
 @Component({
   components: {
     PostComponent,
-  }
+  },
 })
 export default class PostsContainer extends Vue {
   mounted(): void {
@@ -33,5 +33,4 @@ export default class PostsContainer extends Vue {
 }
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

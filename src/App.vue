@@ -1,9 +1,9 @@
 <template>
   <div id="app container-fluid">
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
 <style lang="scss">
-@import "style";
+@import 'style';
 </style>
