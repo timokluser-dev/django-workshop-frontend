@@ -19,6 +19,7 @@
     "core-js": "^3.6.5",
     "graphql": "15.8.0",
     "graphql-tag": "2.12.6",
+    "masonry-layout": "4.2.2",
     "prettier": "2.5.1",
     "prettier-airbnb-config": "1.0.0",
     "vue": "^2.6.11",
@@ -31,6 +32,7 @@
   "devDependencies": {
     "@graphql-codegen/cli": "2.3.0",
     "@graphql-codegen/typescript": "2.4.1",
+    "@types/masonry-layout": "4.2.4",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
     "@vue/cli-plugin-babel": "~4.5.0",

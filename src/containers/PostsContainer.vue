@@ -1,7 +1,7 @@
 <template>
   <div v-if="!loading && posts">
-    <div class="posts row row-cols-1 row-cols-md-3 g-4">
-      <div class="col" v-for="post in posts" :key="post.id">
+    <div class="posts row">
+      <div class="col-sm-6 col-lg-4 mb-4" v-for="post in posts" :key="post.id">
         <PostComponent :post="post"></PostComponent>
       </div>
     </div>
@@ -12,6 +12,7 @@
 import {Component, Vue} from 'vue-property-decorator';
 import {PostType} from '@/api/types/backend';
 import PostComponent from '@/components/PostComponent.vue';
+import Masonry from 'masonry-layout';
 
 @Component({
   components: {
@@ -19,8 +20,9 @@ import PostComponent from '@/components/PostComponent.vue';
   },
 })
 export default class PostsContainer extends Vue {
-  mounted(): void {
-    this.$store.dispatch('backend/fetchPosts');
+  async mounted(): Promise<void> {
+    await this.$store.dispatch('backend/fetchPosts');
+    new Masonry('.posts', {});
   }
 
   get loading(): boolean {
