@@ -20,6 +20,7 @@
     "graphql": "15.8.0",
     "graphql-tag": "2.12.6",
     "masonry-layout": "4.2.2",
+    "moment": "2.29.1",
     "prettier": "2.5.1",
     "prettier-airbnb-config": "1.0.0",
     "vue": "^2.6.11",
