@@ -7,8 +7,16 @@ Vue.use(VueRouter);
 const routes: Array<RouteConfig> = [
   {
     path: '/',
+    redirect: '/home',
+  },
+  {
+    path: '/home',
     name: 'Home',
     component: Home,
+  },
+  {
+    path: '**',
+    redirect: '/',
   },
 ];
 
