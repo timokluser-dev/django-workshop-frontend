@@ -11,7 +11,6 @@ export const actions: ActionTree<BackendState, any> = {
 
     const result = await createApolloClient().query({query: PostsQuery});
     if (result.data && !result.errors) {
-      console.log(result.data.postList);
       commit('updatePosts', result.data.postList);
     }
   },
@@ -20,7 +19,6 @@ export const actions: ActionTree<BackendState, any> = {
 
     const result = await createApolloClient().query({query: PostQuery, variables: {id: id}});
     if (result.data && !result.errors) {
-      console.log(result.data.postDetail);
       commit('updatePost', result.data.postDetail);
     }
   },
