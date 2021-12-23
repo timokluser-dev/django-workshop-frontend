@@ -4,11 +4,16 @@ query PostQuery($id: ID!) {
     name
     text
     image
+    datePublished
+    dateModified
     category {
       name
     }
     keywords {
       name
+    }
+    writtenBy {
+      username
     }
   }
 }

@@ -1,8 +1,8 @@
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends {[key: string]: unknown}> = {[K in keyof T]: T[K]};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {[SubKey in K]?: Maybe<T[SubKey]>};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {[SubKey in K]: Maybe<T[SubKey]>};
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -25,6 +25,11 @@ export type CategoryType = {
   posts: Array<PostType>;
 };
 
+export type CreatePostMutation = {
+  __typename?: 'CreatePostMutation';
+  createPost?: Maybe<PostType>;
+};
+
 export type KeywordType = {
   __typename?: 'KeywordType';
   id: Scalars['ID'];
@@ -42,6 +47,7 @@ export type PostType = {
   keywords: Array<KeywordType>;
   name: Scalars['String'];
   text?: Maybe<Scalars['String']>;
+  writtenBy?: Maybe<UserType>;
 };
 
 export type Query = {
@@ -53,21 +59,40 @@ export type Query = {
   keywordList?: Maybe<Array<Maybe<KeywordType>>>;
   postDetail?: Maybe<PostType>;
   postList?: Maybe<Array<Maybe<PostType>>>;
+  userDetail?: Maybe<UserType>;
 };
+
 
 export type QueryCategoryDetailArgs = {
   id: Scalars['ID'];
 };
 
+
 export type QueryKeywordDetailArgs = {
   id: Scalars['ID'];
 };
+
 
 export type QueryPostDetailArgs = {
   id: Scalars['ID'];
 };
 
+
 export type QueryPostListArgs = {
   categoryId?: InputMaybe<Scalars['ID']>;
   keywordId?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type QueryUserDetailArgs = {
+  username: Scalars['String'];
+};
+
+export type UserType = {
+  __typename?: 'UserType';
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  posts: Array<PostType>;
+  /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
+  username: Scalars['String'];
 };
