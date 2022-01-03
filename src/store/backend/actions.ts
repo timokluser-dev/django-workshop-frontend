@@ -9,17 +9,29 @@ export const actions: ActionTree<BackendState, any> = {
   async fetchPosts({commit}): Promise<void> {
     commit('setPostsLoading');
 
-    const result = await createApolloClient().query({query: PostsQuery});
-    if (result.data && !result.errors) {
-      commit('updatePosts', result.data.postList);
+    try {
+      const result = await createApolloClient().query({query: PostsQuery});
+      if (result.data && !result.errors) {
+        commit('updatePosts', result.data.postList);
+      } else {
+        commit('setPostsFailed');
+      }
+    } catch (e) {
+      commit('setPostsFailed', e);
     }
   },
   async fetchPost({commit}, id: string): Promise<void> {
     commit('setPostLoading');
 
-    const result = await createApolloClient().query({query: PostQuery, variables: {id: id}});
-    if (result.data && !result.errors) {
-      commit('updatePost', result.data.postDetail);
+    try {
+      const result = await createApolloClient().query({query: PostQuery, variables: {id: id}});
+      if (result.data && !result.errors) {
+        commit('updatePost', result.data.postDetail);
+      } else {
+        commit('setPostFailed');
+      }
+    } catch (e) {
+      commit('setPostFailed', e);
     }
   },
 };

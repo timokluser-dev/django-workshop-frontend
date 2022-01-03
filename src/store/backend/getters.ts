@@ -10,10 +10,22 @@ export const getters: GetterTree<BackendState, any> = {
   postLoading: (state): boolean => {
     return state.postLoading;
   },
+  postFailed: (state): boolean => {
+    return state.postFailed;
+  },
+  postError: (state): Error | null => {
+    return state.postError;
+  },
   posts: (state): PostType[] | null => {
     return state.posts;
   },
   postsLoading: (state): boolean => {
     return state.postsLoading;
+  },
+  postsFailed: (state): boolean => {
+    return state.postsFailed;
+  },
+  postsError: (state): Error | null => {
+    return state.postsError;
   },
 };

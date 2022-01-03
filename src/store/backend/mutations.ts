@@ -9,6 +9,12 @@ export const mutations: MutationTree<BackendState> = {
   },
   setPostsLoading: state => {
     state.postsLoading = true;
+    state.postsFailed = false;
+  },
+  setPostsFailed: (state, error: Error | null = null) => {
+    state.postsFailed = true;
+    state.postsError = error;
+    state.postsLoading = false;
   },
   updatePost: (state, post: PostType) => {
     state.post = post;
@@ -16,5 +22,11 @@ export const mutations: MutationTree<BackendState> = {
   },
   setPostLoading: state => {
     state.postLoading = true;
+    state.postFailed = false;
+  },
+  setPostFailed: (state, error: Error | null = null) => {
+    state.postFailed = true;
+    state.postError = error;
+    state.postLoading = false;
   },
 };
