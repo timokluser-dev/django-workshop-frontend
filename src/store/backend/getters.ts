@@ -1,6 +1,6 @@
 import {GetterTree} from 'vuex';
 import {BackendState} from '@/store/backend/index';
-import {PostType} from '@/api/types/backend';
+import {CategoryType, KeywordType, PostType} from '@/api/types/backend';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getters: GetterTree<BackendState, any> = {
@@ -27,5 +27,11 @@ export const getters: GetterTree<BackendState, any> = {
   },
   postsError: (state): Error | null => {
     return state.postsError;
+  },
+  categories: (state): CategoryType[] | null => {
+    return state.categories;
+  },
+  keywords: (state): KeywordType[] | null => {
+    return state.keywords;
   },
 };

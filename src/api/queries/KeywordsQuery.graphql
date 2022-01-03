@@ -1,0 +1,6 @@
+query KeywordsQuery {
+    keywordList {
+        id
+        name
+    }
+}

@@ -1,5 +1,5 @@
 import {Module} from 'vuex';
-import {PostType} from '@/api/types/backend';
+import {CategoryType, KeywordType, PostType} from '@/api/types/backend';
 import {actions} from '@/store/backend/actions';
 import {mutations} from '@/store/backend/mutations';
 import {getters} from '@/store/backend/getters';
@@ -13,6 +13,8 @@ export interface BackendState {
   postsLoading: boolean;
   postsFailed: boolean;
   postsError: Error | null;
+  categories: CategoryType[] | null;
+  keywords: KeywordType[] | null;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -26,6 +28,8 @@ const backendModule: Module<BackendState, any> = {
     postsLoading: false,
     postsFailed: false,
     postsError: null,
+    categories: null,
+    keywords: null
   }),
   actions,
   getters,
