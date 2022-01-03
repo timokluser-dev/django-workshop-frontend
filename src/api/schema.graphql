@@ -2,7 +2,7 @@
 
 schema {
     query: Query
-    mutation: CreatePostMutation
+    mutation: Mutation
 }
 
 type CategoryType {
@@ -11,14 +11,26 @@ type CategoryType {
     posts: [PostType!]!
 }
 
-type CreatePostMutation {
-    createPost: PostType
+type ErrorType {
+    field: String!
+    messages: [String!]!
 }
 
 type KeywordType {
     id: ID!
     name: String!
     posts: [PostType!]!
+}
+
+type Mutation {
+    createPost(input: PostMutationInput!): PostMutationPayload
+    updatePost(input: PostMutationInput!): PostMutationPayload
+}
+
+type PostMutationPayload {
+    clientMutationId: String
+    errors: [ErrorType]
+    post: PostType
 }
 
 type PostType {
@@ -59,3 +71,14 @@ value as specified by
 [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
 """
 scalar DateTime
+
+input PostMutationInput {
+    category: ID!
+    clientMutationId: String
+    id: ID
+    image: String
+    keywords: [ID]!
+    name: String!
+    text: String!
+    writtenBy: ID!
+}
