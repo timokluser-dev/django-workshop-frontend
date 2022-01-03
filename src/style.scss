@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 $font-family-base: 'Roboto';
 
+$modal-content-border-width: 0px;
+
 @import '~bootstrap/scss/bootstrap';
 @import '~bootstrap-icons/font/bootstrap-icons.css';
+
+.clickable {
+  cursor: pointer;
+}
