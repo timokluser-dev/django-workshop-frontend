@@ -14,17 +14,17 @@
               <label for="name">Title</label>
             </div>
             <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="author" placeholder="Author" readonly="readonly"
-                     v-model="form.author">
-              <label for="author">Author</label>
-            </div>
-            <div class="form-floating mb-3">
               <select class="form-select" id="categories" v-model="form.category">
                 <option :value="category.id" v-for="category in categories" :key="category.id">
                   {{ category.name }}
                 </option>
               </select>
               <label for="categories">Category</label>
+            </div>
+            <div class="form-floating mb-3">
+              <textarea class="form-control" id="text" placeholder="This is my post about ..."
+                        v-model="form.text"></textarea>
+              <label for="text">Text</label>
             </div>
             <div class="mb-3">
               <label for="keywords" class="col-form-label">Keywords:</label>
@@ -34,12 +34,13 @@
                 </option>
               </select>
             </div>
-            <div class="form-floating mb-3">
-              <textarea class="form-control" id="text" placeholder="This is my post about ..."
-                        v-model="form.text"></textarea>
-              <label for="text">Text</label>
-            </div>
           </form>
+
+          <div class="row mt-4" v-if="error">
+            <div class="col d-flex justify-content-center">
+              <p class="text-danger d-block mb-0">Oops! Please fill out all information.</p>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" @click.prevent="onSubmit">Create Post</button>
@@ -68,6 +69,7 @@ export default class NewPostModalContainer extends Vue {
     keywords: [],
     text: null
   }
+  error = false;
 
   mounted(): void {
     this.$store.dispatch('backend/fetchCategories');
@@ -75,7 +77,7 @@ export default class NewPostModalContainer extends Vue {
 
     this.modal = this.$refs.modal as Element;
     this.bsModal = new Modal(this.modal, {focus: true, keyboard: false, backdrop: 'static'});
-    this.bsModal.show()
+    this.bsModal.show();
 
     this.modal.addEventListener('hidden.bs.modal', this.onModalHidden);
   }
@@ -95,7 +97,6 @@ export default class NewPostModalContainer extends Vue {
   async onSubmit(): Promise<void> {
     if (!nullOrEmpty(this.form.title) && !nullOrEmpty(this.form.text) && !nullOrEmpty(this.form.category) &&
         !nullOrEmpty(this.form.author) && this.form.keywords.length > 0) {
-
       const post: PostMutationInput = {
         name: this.form.title ?? '',
         text: this.form.text ?? '',
@@ -108,8 +109,9 @@ export default class NewPostModalContainer extends Vue {
       if (success) {
         this.hideModal();
       }
+    } else {
+      this.error = true;
     }
-
   }
 
   get categories(): CategoryType[] | null {
