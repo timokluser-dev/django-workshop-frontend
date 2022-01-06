@@ -81,6 +81,7 @@ type Refresh {
 
 type UserType {
     firstName: String!
+    id: ID!
     lastName: String!
     posts: [PostType!]!
     "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."

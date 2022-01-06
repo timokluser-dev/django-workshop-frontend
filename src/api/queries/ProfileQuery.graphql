@@ -1,0 +1,8 @@
+query ProfileQuery {
+    me {
+        id,
+        username,
+        firstName,
+        lastName
+    }
+}
