@@ -5,3 +5,8 @@ export type PostMutationInput = {
   writtenBy: string | number;
   keywords: string[] | number[];
 };
+
+export type LoginInput = {
+  username: string;
+  password: string;
+};
