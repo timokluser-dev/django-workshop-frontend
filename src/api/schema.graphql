@@ -11,13 +11,13 @@ type CategoryType {
     posts: [PostType!]!
 }
 
-type DeleteJSONWebTokenCookie {
-    deleted: Boolean!
+type CreatePost {
+    errors: [String]
+    success: Boolean
 }
 
-type ErrorType {
-    field: String!
-    messages: [String!]!
+type DeleteJSONWebTokenCookie {
+    deleted: Boolean!
 }
 
 type KeywordType {
@@ -27,12 +27,12 @@ type KeywordType {
 }
 
 type Mutation {
-    createPost(input: PostMutationInput!): PostMutationPayload
+    createPost(input: PostInput!): CreatePost
     deleteToken: DeleteJSONWebTokenCookie
     refreshToken(token: String): Refresh
     "Obtain JSON Web Token mutation"
     tokenAuth(password: String!, username: String!): ObtainJSONWebToken
-    updatePost(input: PostMutationInput!): PostMutationPayload
+    updatePost(id: ID!, input: PostInput!): UpdatePost
     verifyToken(token: String): Verify
 }
 
@@ -41,12 +41,6 @@ type ObtainJSONWebToken {
     payload: GenericScalar!
     refreshExpiresIn: Int!
     token: String!
-}
-
-type PostMutationPayload {
-    clientMutationId: String
-    errors: [ErrorType]
-    post: PostType
 }
 
 type PostType {
@@ -79,6 +73,11 @@ type Refresh {
     token: String!
 }
 
+type UpdatePost {
+    errors: [String]
+    success: Boolean
+}
+
 type UserType {
     firstName: String!
     id: ID!
@@ -108,13 +107,10 @@ String, Boolean, Int, Float, List or Object.
 """
 scalar GenericScalar
 
-input PostMutationInput {
-    category: ID!
-    clientMutationId: String
-    id: ID
+input PostInput {
+    categoryId: ID
     image: String
-    keywords: [ID]!
-    name: String!
-    text: String!
-    writtenBy: ID!
+    keywords: [ID]
+    name: String
+    text: String
 }
