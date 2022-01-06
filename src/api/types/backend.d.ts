@@ -16,6 +16,12 @@ export type Scalars = {
    * [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
    */
   DateTime: any;
+  /**
+   * The `GenericScalar` scalar type represents a generic
+   * GraphQL scalar value that could be:
+   * String, Boolean, Int, Float, List or Object.
+   */
+  GenericScalar: any;
 };
 
 export type CategoryType = {
@@ -25,9 +31,15 @@ export type CategoryType = {
   posts: Array<PostType>;
 };
 
-export type CreatePostMutation = {
-  __typename?: 'CreatePostMutation';
-  createPost?: Maybe<PostType>;
+export type CreatePost = {
+  __typename?: 'CreatePost';
+  errors?: Maybe<Array<Maybe<Scalars['String']>>>;
+  success?: Maybe<Scalars['Boolean']>;
+};
+
+export type DeleteJsonWebTokenCookie = {
+  __typename?: 'DeleteJSONWebTokenCookie';
+  deleted: Scalars['Boolean'];
 };
 
 export type KeywordType = {
@@ -35,6 +47,60 @@ export type KeywordType = {
   id: Scalars['ID'];
   name: Scalars['String'];
   posts: Array<PostType>;
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  createPost?: Maybe<CreatePost>;
+  deleteToken?: Maybe<DeleteJsonWebTokenCookie>;
+  refreshToken?: Maybe<Refresh>;
+  /** Obtain JSON Web Token mutation */
+  tokenAuth?: Maybe<ObtainJsonWebToken>;
+  updatePost?: Maybe<UpdatePost>;
+  verifyToken?: Maybe<Verify>;
+};
+
+
+export type MutationCreatePostArgs = {
+  input: PostInput;
+};
+
+
+export type MutationRefreshTokenArgs = {
+  token?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationTokenAuthArgs = {
+  password: Scalars['String'];
+  username: Scalars['String'];
+};
+
+
+export type MutationUpdatePostArgs = {
+  id: Scalars['ID'];
+  input: PostInput;
+};
+
+
+export type MutationVerifyTokenArgs = {
+  token?: InputMaybe<Scalars['String']>;
+};
+
+/** Obtain JSON Web Token mutation */
+export type ObtainJsonWebToken = {
+  __typename?: 'ObtainJSONWebToken';
+  payload: Scalars['GenericScalar'];
+  refreshExpiresIn: Scalars['Int'];
+  token: Scalars['String'];
+};
+
+export type PostInput = {
+  categoryId?: InputMaybe<Scalars['ID']>;
+  image?: InputMaybe<Scalars['String']>;
+  keywords?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  name?: InputMaybe<Scalars['String']>;
+  text?: InputMaybe<Scalars['String']>;
 };
 
 export type PostType = {
@@ -57,6 +123,7 @@ export type Query = {
   hello?: Maybe<Scalars['String']>;
   keywordDetail?: Maybe<KeywordType>;
   keywordList?: Maybe<Array<Maybe<KeywordType>>>;
+  me?: Maybe<UserType>;
   postDetail?: Maybe<PostType>;
   postList?: Maybe<Array<Maybe<PostType>>>;
   userDetail?: Maybe<UserType>;
@@ -88,11 +155,30 @@ export type QueryUserDetailArgs = {
   username: Scalars['String'];
 };
 
+export type Refresh = {
+  __typename?: 'Refresh';
+  payload: Scalars['GenericScalar'];
+  refreshExpiresIn: Scalars['Int'];
+  token: Scalars['String'];
+};
+
+export type UpdatePost = {
+  __typename?: 'UpdatePost';
+  errors?: Maybe<Array<Maybe<Scalars['String']>>>;
+  success?: Maybe<Scalars['Boolean']>;
+};
+
 export type UserType = {
   __typename?: 'UserType';
   firstName: Scalars['String'];
+  id: Scalars['ID'];
   lastName: Scalars['String'];
   posts: Array<PostType>;
   /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
   username: Scalars['String'];
+};
+
+export type Verify = {
+  __typename?: 'Verify';
+  payload: Scalars['GenericScalar'];
 };
