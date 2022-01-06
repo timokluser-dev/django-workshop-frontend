@@ -22,7 +22,10 @@ export const actions: ActionTree<AuthState, any> = {
       commit('setError', 'Unfortunately, no valid user was found. Please try again.');
     }
   },
-  async logout({commit}): Promise<void> {
+  async logout({dispatch}): Promise<void> {
+    await dispatch('revokeToken');
+  },
+  async revokeToken({commit}): Promise<any> {
     commit('setError', null);
     try {
       const result = await createApolloClient().mutate({
@@ -32,7 +35,7 @@ export const actions: ActionTree<AuthState, any> = {
         commit('setMe', null);
       }
     } catch (e) {
-      commit('setError', 'Could not logout');
+      commit('setError', 'Could not revoke token');
       return Promise.reject();
     }
   },
