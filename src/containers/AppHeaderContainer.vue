@@ -18,9 +18,9 @@
       </div>
     </nav>
 
-    <NewPostModalContainer v-if="newVisible" @modalHidden="onModalHidden"></NewPostModalContainer>
+    <NewPostModalContainer v-if="newPostModalVisible" @modalHidden="onNewPostModalHidden"></NewPostModalContainer>
 
-    <LoginModalContainer v-if="loginVisible"></LoginModalContainer>
+    <LoginModalContainer v-if="loginModalVisible" @modalHidden="onLoginModalHidden"></LoginModalContainer>
   </div>
 </template>
 
@@ -36,19 +36,23 @@ import LoginModalContainer from "@/containers/LoginModalContainer.vue";
   }
 })
 export default class AppHeaderContainer extends Vue {
-  newVisible = false;
-  loginVisible = false;
+  newPostModalVisible = false;
+  loginModalVisible = false;
 
   onNewClick(): void {
-    this.newVisible = !this.newVisible;
+    this.newPostModalVisible = !this.newPostModalVisible;
   }
 
-  onModalHidden(): void {
-    this.newVisible = false;
+  onNewPostModalHidden(): void {
+    this.newPostModalVisible = false;
+  }
+
+  onLoginModalHidden(): void {
+    this.loginModalVisible = false;
   }
 
   onLoginClick(): void {
-    this.loginVisible = !this.loginVisible;
+    this.loginModalVisible = !this.loginModalVisible;
   }
 
   onLogoutClick(): void {
