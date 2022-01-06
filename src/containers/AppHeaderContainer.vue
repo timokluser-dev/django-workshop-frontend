@@ -56,12 +56,11 @@ export default class AppHeaderContainer extends Vue {
   }
 
   onLogoutClick(): void {
-    // TODO logout
+    this.$store.dispatch('auth/logout');
   }
 
   get isLoggedIn(): boolean {
-    // TODO get from store
-    return false;
+    return this.$store.getters['auth/isAuthenticated'];
   }
 }
 </script>
