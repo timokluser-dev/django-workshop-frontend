@@ -11,6 +11,10 @@ type CategoryType {
     posts: [PostType!]!
 }
 
+type DeleteJSONWebTokenCookie {
+    deleted: Boolean!
+}
+
 type ErrorType {
     field: String!
     messages: [String!]!
@@ -24,7 +28,19 @@ type KeywordType {
 
 type Mutation {
     createPost(input: PostMutationInput!): PostMutationPayload
+    deleteToken: DeleteJSONWebTokenCookie
+    refreshToken(token: String): Refresh
+    "Obtain JSON Web Token mutation"
+    tokenAuth(password: String!, username: String!): ObtainJSONWebToken
     updatePost(input: PostMutationInput!): PostMutationPayload
+    verifyToken(token: String): Verify
+}
+
+"Obtain JSON Web Token mutation"
+type ObtainJSONWebToken {
+    payload: GenericScalar!
+    refreshExpiresIn: Int!
+    token: String!
 }
 
 type PostMutationPayload {
@@ -51,9 +67,16 @@ type Query {
     hello: String
     keywordDetail(id: ID!): KeywordType
     keywordList: [KeywordType]
+    me: UserType
     postDetail(id: ID!): PostType
     postList(categoryId: ID, keywordId: ID): [PostType]
     userDetail(username: String!): UserType
+}
+
+type Refresh {
+    payload: GenericScalar!
+    refreshExpiresIn: Int!
+    token: String!
 }
 
 type UserType {
@@ -64,6 +87,10 @@ type UserType {
     username: String!
 }
 
+type Verify {
+    payload: GenericScalar!
+}
+
 """
 
 The `DateTime` scalar type represents a DateTime
@@ -71,6 +98,14 @@ value as specified by
 [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
 """
 scalar DateTime
+
+"""
+
+The `GenericScalar` scalar type represents a generic
+GraphQL scalar value that could be:
+String, Boolean, Int, Float, List or Object.
+"""
+scalar GenericScalar
 
 input PostMutationInput {
     category: ID!
