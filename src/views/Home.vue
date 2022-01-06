@@ -1,8 +1,6 @@
 <template>
   <div>
-    <AppHeaderComponent @newClick="onNewClick"></AppHeaderComponent>
-
-    <NewPostModalComponent v-if="newVisible" @modalHidden="onModalHidden"></NewPostModalComponent>
+    <AppHeaderContainer></AppHeaderContainer>
 
     <div class="home p-4">
       <PostsContainer></PostsContainer>
@@ -13,26 +11,17 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import PostsContainer from '@/containers/PostsContainer.vue';
-import AppHeaderComponent from "@/components/AppHeaderComponent.vue";
+import AppHeaderContainer from "@/containers/AppHeaderContainer.vue";
 import NewPostModalComponent from "@/containers/NewPostModalContainer.vue";
 
 @Component({
   components: {
     NewPostModalComponent,
-    AppHeaderComponent,
+    AppHeaderContainer,
     PostsContainer,
   },
 })
 export default class Home extends Vue {
-  newVisible = false;
-
-  onNewClick(): void {
-    this.newVisible = !this.newVisible;
-  }
-
-  onModalHidden(): void {
-    this.newVisible = false;
-  }
 }
 </script>
 
