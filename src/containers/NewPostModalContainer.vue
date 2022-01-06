@@ -52,8 +52,7 @@
 
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator";
-import {CategoryType, KeywordType} from "@/api/types/backend";
-import {PostMutationInput} from "@/api/types/mutations";
+import {CategoryType, KeywordType, PostInput} from "@/api/types/backend";
 import {nullOrEmpty} from "@/helpers";
 import {Modal} from "bootstrap";
 
@@ -64,7 +63,6 @@ export default class NewPostModalContainer extends Vue {
 
   form = {
     title: null,
-    author: '1',
     category: null,
     keywords: [],
     text: null
@@ -96,17 +94,16 @@ export default class NewPostModalContainer extends Vue {
 
   async onSubmit(): Promise<void> {
     if (!nullOrEmpty(this.form.title) && !nullOrEmpty(this.form.text) && !nullOrEmpty(this.form.category) &&
-        !nullOrEmpty(this.form.author) && this.form.keywords.length > 0) {
-      const post: PostMutationInput = {
+        this.form.keywords.length > 0) {
+      const post: PostInput = {
         name: this.form.title ?? '',
         text: this.form.text ?? '',
-        category: this.form.category ?? '',
-        writtenBy: this.form.author ?? '',
+        categoryId: this.form.category ?? '',
         keywords: this.form.keywords,
       }
 
-      const success = await this.$store.dispatch('backend/createPost', post);
-      if (success) {
+      const create = await this.$store.dispatch('backend/createPost', post);
+      if (create.success) {
         this.hideModal();
       }
     } else {

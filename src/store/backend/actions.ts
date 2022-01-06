@@ -6,7 +6,7 @@ import PostQuery from '@/api/queries/PostQuery.graphql';
 import CategoriesQuery from '@/api/queries/CategoriesQuery.graphql';
 import KeywordsQuery from '@/api/queries/KeywordsQuery.graphql';
 import PostMutation from '@/api/mutations/PostMutation.graphql';
-import {PostMutationInput} from '@/api/types/mutations';
+import {PostInput} from "@/api/types/backend";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const actions: ActionTree<BackendState, any> = {
@@ -58,13 +58,13 @@ export const actions: ActionTree<BackendState, any> = {
       console.error(e);
     }
   },
-  async createPost({dispatch}, post: PostMutationInput): Promise<{success: boolean}> {
+  async createPost({dispatch}, post: PostInput): Promise<{success: boolean}> {
     try {
       const result = await createApolloClient().mutate({
         mutation: PostMutation,
         variables: {post},
       });
-      if (!result.errors) {
+      if (!result.errors && result.data.createPost.success) {
         dispatch('fetchPosts');
         return Promise.resolve({success: true});
       }
