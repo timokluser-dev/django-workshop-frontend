@@ -1,5 +1,6 @@
 mutation PostMutation($post: PostInput!) {
     createPost(input: $post) {
         success
+        errors
     }
 }

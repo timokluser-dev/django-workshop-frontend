@@ -1,5 +1,6 @@
 mutation PostMutation($id: ID!, $post: PostInput!) {
     updatePost(id: $id, input: $post) {
         success
+        errors
     }
 }
