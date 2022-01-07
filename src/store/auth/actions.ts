@@ -25,7 +25,7 @@ export const actions: ActionTree<AuthState, any> = {
   async logout({dispatch}): Promise<void> {
     await dispatch('revokeToken');
   },
-  async revokeToken({commit}): Promise<any> {
+  async revokeToken({commit}): Promise<void> {
     commit('setError', null);
     try {
       const result = await createApolloClient().mutate({
@@ -39,7 +39,7 @@ export const actions: ActionTree<AuthState, any> = {
       return Promise.reject();
     }
   },
-  async fetchProfile({commit, dispatch}): Promise<any> {
+  async fetchProfile({commit, dispatch}): Promise<void> {
     commit('setError', null);
     try {
       const result = await createApolloClient().query({
