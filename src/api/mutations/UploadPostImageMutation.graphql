@@ -1,0 +1,6 @@
+mutation UploadPostImageMutation($id:ID!, $image:Upload!) {
+    uploadPostImage(id: $id, image: $image) {
+        success
+        errors
+    }
+}

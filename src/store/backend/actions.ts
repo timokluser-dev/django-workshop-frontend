@@ -6,7 +6,9 @@ import PostQuery from '@/api/queries/PostQuery.graphql';
 import CategoriesQuery from '@/api/queries/CategoriesQuery.graphql';
 import KeywordsQuery from '@/api/queries/KeywordsQuery.graphql';
 import CreatePostMutation from '@/api/mutations/CreatePostMutation.graphql';
-import {PostInput} from '@/api/types/backend';
+import UploadPostImageMutation from '@/api/mutations/UploadPostImageMutation.graphql';
+import {CreatePost, PostInput} from '@/api/types/backend';
+import {UploadPostImageInput} from '@/api/types/mutations';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const actions: ActionTree<BackendState, any> = {
@@ -58,7 +60,7 @@ export const actions: ActionTree<BackendState, any> = {
       console.error(e);
     }
   },
-  async createPost({dispatch}, post: PostInput): Promise<{success: boolean}> {
+  async createPost({dispatch}, post: PostInput): Promise<CreatePost> {
     try {
       const result = await createApolloClient().mutate({
         mutation: CreatePostMutation,
@@ -66,12 +68,28 @@ export const actions: ActionTree<BackendState, any> = {
       });
       if (!result.errors && result.data.createPost.success) {
         dispatch('fetchPosts');
-        return Promise.resolve({success: true});
+        return Promise.resolve(result.data.createPost as CreatePost);
       }
     } catch (e) {
       console.error(e);
     }
 
-    return Promise.resolve({success: false});
+    return Promise.reject();
+  },
+  async uploadPostImage({dispatch}, input: UploadPostImageInput): Promise<void> {
+    try {
+      const result = await createApolloClient().mutate({
+        mutation: UploadPostImageMutation,
+        variables: {...input},
+      });
+      if (!result.errors && result.data.uploadPostImage.success) {
+        dispatch('fetchPosts');
+      } else {
+        return Promise.reject(result.errors);
+      }
+    } catch (e) {
+      console.error(e);
+      return Promise.reject();
+    }
   },
 };

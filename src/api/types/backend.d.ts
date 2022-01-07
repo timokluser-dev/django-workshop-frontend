@@ -38,6 +38,7 @@ export type CategoryType = {
 
 export type CreatePost = {
   __typename?: 'CreatePost';
+  data?: Maybe<PostType>;
   errors?: Maybe<Array<Maybe<Scalars['String']>>>;
   success?: Maybe<Scalars['Boolean']>;
 };
@@ -176,6 +177,7 @@ export type Refresh = {
 
 export type UpdatePost = {
   __typename?: 'UpdatePost';
+  data?: Maybe<PostType>;
   errors?: Maybe<Array<Maybe<Scalars['String']>>>;
   success?: Maybe<Scalars['Boolean']>;
 };

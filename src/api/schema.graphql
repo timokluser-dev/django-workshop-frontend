@@ -12,6 +12,7 @@ type CategoryType {
 }
 
 type CreatePost {
+    data: PostType
     errors: [String]
     success: Boolean
 }
@@ -75,6 +76,7 @@ type Refresh {
 }
 
 type UpdatePost {
+    data: PostType
     errors: [String]
     success: Boolean
 }
