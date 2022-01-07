@@ -33,6 +33,7 @@ type Mutation {
     "Obtain JSON Web Token mutation"
     tokenAuth(password: String!, username: String!): ObtainJSONWebToken
     updatePost(id: ID!, input: PostInput!): UpdatePost
+    uploadPostImage(id: ID!, image: Upload!): UploadPostImage
     verifyToken(token: String): Verify
 }
 
@@ -78,6 +79,11 @@ type UpdatePost {
     success: Boolean
 }
 
+type UploadPostImage {
+    errors: [String]
+    success: Boolean
+}
+
 type UserType {
     firstName: String!
     id: ID!
@@ -106,6 +112,13 @@ GraphQL scalar value that could be:
 String, Boolean, Int, Float, List or Object.
 """
 scalar GenericScalar
+
+"""
+
+Create scalar that ignores normal serialization/deserialization, since
+that will be handled by the multipart request spec
+"""
+scalar Upload
 
 input PostInput {
     categoryId: ID

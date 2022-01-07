@@ -22,6 +22,11 @@ export type Scalars = {
    * String, Boolean, Int, Float, List or Object.
    */
   GenericScalar: any;
+  /**
+   * Create scalar that ignores normal serialization/deserialization, since
+   * that will be handled by the multipart request spec
+   */
+  Upload: any;
 };
 
 export type CategoryType = {
@@ -57,6 +62,7 @@ export type Mutation = {
   /** Obtain JSON Web Token mutation */
   tokenAuth?: Maybe<ObtainJsonWebToken>;
   updatePost?: Maybe<UpdatePost>;
+  uploadPostImage?: Maybe<UploadPostImage>;
   verifyToken?: Maybe<Verify>;
 };
 
@@ -80,6 +86,12 @@ export type MutationTokenAuthArgs = {
 export type MutationUpdatePostArgs = {
   id: Scalars['ID'];
   input: PostInput;
+};
+
+
+export type MutationUploadPostImageArgs = {
+  id: Scalars['ID'];
+  image: Scalars['Upload'];
 };
 
 
@@ -164,6 +176,12 @@ export type Refresh = {
 
 export type UpdatePost = {
   __typename?: 'UpdatePost';
+  errors?: Maybe<Array<Maybe<Scalars['String']>>>;
+  success?: Maybe<Scalars['Boolean']>;
+};
+
+export type UploadPostImage = {
+  __typename?: 'UploadPostImage';
   errors?: Maybe<Array<Maybe<Scalars['String']>>>;
   success?: Maybe<Scalars['Boolean']>;
 };
