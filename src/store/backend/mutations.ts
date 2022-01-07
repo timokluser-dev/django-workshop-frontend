@@ -35,4 +35,7 @@ export const mutations: MutationTree<BackendState> = {
   setKeywords: (state, keywords: KeywordType[]) => {
     state.keywords = keywords;
   },
+  setPostToEdit: (state, post: PostType) => {
+    state.postToEdit = post;
+  },
 };

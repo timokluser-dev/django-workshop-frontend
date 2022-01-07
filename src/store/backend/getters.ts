@@ -34,4 +34,7 @@ export const getters: GetterTree<BackendState, any> = {
   keywords: (state): KeywordType[] | null => {
     return state.keywords;
   },
+  postToEdit: (state): PostType | null => {
+    return state.postToEdit;
+  },
 };

@@ -1,7 +1,9 @@
 <template>
   <div class="card m-1">
-    <div class="card-header">
+    <div class="card-header d-flex align-items-center justify-content-between">
       <h5 class="mb-0">{{ post.category.name }}</h5>
+
+      <i class="bi bi-pencil clickable" v-if="editable" @click.prevent="onEditClick"></i>
     </div>
     <img class="card-img" alt="Post image" v-if="image" :src="image"/>
     <div class="card-body">
@@ -29,6 +31,7 @@ import moment from "moment";
 @Component
 export default class PostComponent extends Vue {
   @Prop() post!: PostType;
+  @Prop() editable!: boolean;
 
   get image(): string | null {
     return this.post.image ? `${process.env.VUE_APP_MEDIA_URI}${this.post.image}` : null;
@@ -40,6 +43,10 @@ export default class PostComponent extends Vue {
 
   formatDate(date: Date): string {
     return moment(date).format("MM/DD/yyyy, h:mm:ss a");
+  }
+
+  onEditClick(): void {
+    this.$store.commit('backend/setPostToEdit', this.post);
   }
 }
 </script>

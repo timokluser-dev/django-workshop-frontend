@@ -6,8 +6,9 @@ import PostQuery from '@/api/queries/PostQuery.graphql';
 import CategoriesQuery from '@/api/queries/CategoriesQuery.graphql';
 import KeywordsQuery from '@/api/queries/KeywordsQuery.graphql';
 import CreatePostMutation from '@/api/mutations/CreatePostMutation.graphql';
+import UpdatePostMutation from '@/api/mutations/UpdatePostMutation.graphql';
 import UploadPostImageMutation from '@/api/mutations/UploadPostImageMutation.graphql';
-import {CreatePost, PostInput} from '@/api/types/backend';
+import {CreatePost, PostInput, UpdatePost} from '@/api/types/backend';
 import {UploadPostImageInput} from '@/api/types/mutations';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -91,5 +92,27 @@ export const actions: ActionTree<BackendState, any> = {
       console.error(e);
       return Promise.reject();
     }
+  },
+  async updatePost(
+    {dispatch},
+    payload: {id: string | number; post: PostInput}
+  ): Promise<UpdatePost> {
+    try {
+      const result = await createApolloClient().mutate({
+        mutation: UpdatePostMutation,
+        variables: {
+          id: payload.id,
+          post: payload.post,
+        },
+      });
+      if (!result.errors && result.data.updatePost.success) {
+        dispatch('fetchPosts');
+        return Promise.resolve(result.data.updatePost as UpdatePost);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+
+    return Promise.reject();
   },
 };

@@ -5,7 +5,7 @@
     <div v-if="!loading && posts">
       <div class="posts row">
         <div class="col-sm-6 col-lg-4 mb-4" v-for="post in posts" :key="post.id">
-          <PostComponent :post="post"></PostComponent>
+          <PostComponent :post="post" :editable="post.writtenBy && me && post.writtenBy.id === me.id"></PostComponent>
         </div>
       </div>
     </div>
@@ -18,6 +18,7 @@ import {PostType} from '@/api/types/backend';
 import PostComponent from '@/components/PostComponent.vue';
 import Masonry from 'masonry-layout';
 import ApiErrorComponent from "@/components/ApiErrorComponent.vue";
+import {Me} from "@/store/auth/models";
 
 @Component({
   components: {
@@ -28,6 +29,7 @@ import ApiErrorComponent from "@/components/ApiErrorComponent.vue";
 export default class PostsContainer extends Vue {
   async mounted(): Promise<void> {
     await this.$store.dispatch('backend/fetchPosts');
+    await this.$store.dispatch('auth/fetchProfile');
     (!this.failed) && new Masonry('.posts', {});
   }
 
@@ -45,6 +47,10 @@ export default class PostsContainer extends Vue {
 
   get posts(): PostType[] {
     return this.$store.getters['backend/posts'];
+  }
+
+  get me(): Me | null {
+    return this.$store.getters['auth/me'];
   }
 }
 </script>

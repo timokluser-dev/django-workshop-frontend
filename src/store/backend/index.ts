@@ -15,6 +15,7 @@ export interface BackendState {
   postsError: Error | null;
   categories: CategoryType[] | null;
   keywords: KeywordType[] | null;
+  postToEdit: PostType | null;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,7 +30,8 @@ const backendModule: Module<BackendState, any> = {
     postsFailed: false,
     postsError: null,
     categories: null,
-    keywords: null
+    keywords: null,
+    postToEdit: null,
   }),
   actions,
   getters,

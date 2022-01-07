@@ -38,8 +38,9 @@
               <label for="image" class="form-label">Post Image:</label>
               <input class="form-control" type="file" id="image" accept="image/*" @change="onImageChange($event)">
             </div>
-            <div class="mb-3" v-if="form.image">
-              <img src="" class="image-preview" alt="preview" ref="imagePreview">
+            <div class="mb-3">
+              <img src="" class="image-preview" :class="(!form.image) ? 'd-none': ''" alt="preview"
+                   ref="imagePreview">
             </div>
 
             <input type="submit" class="d-none">
@@ -53,7 +54,8 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" :class="(formDisabled) ? 'disabled' : ''"
-                  @click.prevent="onSubmit">Create Post
+                  @click.prevent="onSubmit">
+            Save Post
           </button>
         </div>
       </div>
@@ -63,7 +65,7 @@
 
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator";
-import {CategoryType, CreatePost, KeywordType, PostInput} from "@/api/types/backend";
+import {CategoryType, CreatePost, KeywordType, PostInput, PostType, UpdatePost} from "@/api/types/backend";
 import {nullOrEmpty} from "@/helpers";
 import {Modal} from "bootstrap";
 
@@ -74,11 +76,11 @@ export default class NewPostModalContainer extends Vue {
   previewImageFileReader: FileReader | null = null;
 
   form = {
-    title: null,
-    category: null,
+    title: '',
+    category: '',
     keywords: [],
-    text: null,
-    image: null
+    text: '',
+    image: ''
   }
   formError = false;
   formDisabled = false;
@@ -86,6 +88,17 @@ export default class NewPostModalContainer extends Vue {
   mounted(): void {
     this.$store.dispatch('backend/fetchCategories');
     this.$store.dispatch('backend/fetchKeywords');
+
+    if (this.editPost) {
+      this.form.title = this.editPost.name;
+      this.form.category = this.editPost.category.id;
+      this.form.keywords = this.editPost.keywords.map(k => k.id) ?? [];
+      this.form.text = this.editPost.text ?? '';
+      this.form.image = this.editPost.image ?? '';
+      if (this.editPost.image) {
+        this.setImagePreview(`${process.env.VUE_APP_MEDIA_URI}${this.editPost.image}`);
+      }
+    }
 
     this.modal = this.$refs.modal as Element;
     this.bsModal = new Modal(this.modal, {focus: true, keyboard: false, backdrop: 'static'});
@@ -98,6 +111,9 @@ export default class NewPostModalContainer extends Vue {
   }
 
   hideModal(): void {
+    if (this.editPost) {
+      this.$store.commit('backend/setPostToEdit', null);
+    }
     this.bsModal?.hide();
   }
 
@@ -111,7 +127,8 @@ export default class NewPostModalContainer extends Vue {
 
   // eslint-disable-next-line
   onFileReaderLoad($event: any): void {
-    (this.$refs.imagePreview as HTMLImageElement).src = $event.target?.result as string;
+    const src = $event.target?.result as string;
+    this.setImagePreview(src);
   }
 
   // eslint-disable-next-line
@@ -132,26 +149,64 @@ export default class NewPostModalContainer extends Vue {
         keywords: this.form.keywords,
       }
 
-      const create: CreatePost = await this.$store.dispatch('backend/createPost', post);
-      if (create.success) {
-        this.$store.dispatch('backend/uploadPostImage', {
-          id: create.data?.id,
-          image: this.form.image
-        }).then(() => {
-              this.hideModal();
-            },
-            () => {
-              this.formError = true;
-              this.formDisabled = false;
-            });
+      if (this.editPost) {
+        if (this.form.image === this.editPost.image) {
+          post.image = this.editPost.image;
+        }
+        const update: UpdatePost = await this.$store.dispatch('backend/updatePost', {
+          id: this.editPost.id,
+          post: post
+        });
+        if (update.success) {
+          if (post.image) {
+            this.hideModal();
+            return;
+          }
+          this.$store.dispatch('backend/uploadPostImage', {
+            id: update.data?.id,
+            image: this.form.image
+          }).then(
+              () => {
+                this.hideModal();
+              },
+              () => {
+                this.formError = true;
+                this.formDisabled = false;
+              }
+          );
+        }
       } else {
-        this.formError = true;
-        this.formDisabled = false;
+        const create: CreatePost = await this.$store.dispatch('backend/createPost', post);
+        if (create.success) {
+          if (!this.form.image) {
+            this.hideModal();
+            return;
+          }
+          this.$store.dispatch('backend/uploadPostImage', {
+            id: create.data?.id,
+            image: this.form.image
+          }).then(
+              () => {
+                this.hideModal();
+              },
+              () => {
+                this.formError = true;
+                this.formDisabled = false;
+              }
+          );
+        } else {
+          this.formError = true;
+          this.formDisabled = false;
+        }
       }
     } else {
       this.formError = true;
       this.formDisabled = false;
     }
+  }
+
+  setImagePreview(src: string): void {
+    (this.$refs.imagePreview as HTMLImageElement).src = src;
   }
 
   get categories(): CategoryType[] | null {
@@ -160,6 +215,10 @@ export default class NewPostModalContainer extends Vue {
 
   get keywords(): KeywordType[] | null {
     return this.$store.getters['backend/keywords'];
+  }
+
+  get editPost(): PostType | null {
+    return this.$store.getters['backend/postToEdit'];
   }
 }
 </script>

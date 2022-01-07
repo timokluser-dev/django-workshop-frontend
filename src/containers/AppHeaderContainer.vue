@@ -18,7 +18,7 @@
       </div>
     </nav>
 
-    <NewPostModalContainer v-if="newPostModalVisible" @modalHidden="onNewPostModalHidden"></NewPostModalContainer>
+    <NewPostModalContainer v-if="newPostModalVisible || editPost" @modalHidden="onNewPostModalHidden"></NewPostModalContainer>
 
     <LoginModalContainer v-if="loginModalVisible" @modalHidden="onLoginModalHidden"></LoginModalContainer>
   </div>
@@ -28,6 +28,7 @@
 import {Component, Vue} from "vue-property-decorator";
 import NewPostModalContainer from "@/containers/NewPostModalContainer.vue";
 import LoginModalContainer from "@/containers/LoginModalContainer.vue";
+import {PostType} from "@/api/types/backend";
 
 @Component({
   components: {
@@ -61,6 +62,10 @@ export default class AppHeaderContainer extends Vue {
 
   get isLoggedIn(): boolean {
     return this.$store.getters['auth/isAuthenticated'];
+  }
+
+  get editPost(): PostType | null {
+    return this.$store.getters['backend/postToEdit'];
   }
 }
 </script>

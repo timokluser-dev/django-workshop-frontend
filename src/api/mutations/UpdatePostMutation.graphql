@@ -4,6 +4,7 @@ mutation UpdatePostMutation($id: ID!, $post: PostInput!) {
         errors
         data {
             id
+            image
         }
     }
 }
