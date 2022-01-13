@@ -92,7 +92,7 @@ export default class NewPostModalContainer extends Vue {
     if (this.editPost) {
       this.form.title = this.editPost.name;
       this.form.category = this.editPost.category.id;
-      this.form.keywords = this.editPost.keywords.map(k => k.id) ?? [];
+      this.form.keywords = this.editPost.keywords.map(k => k.id) as never[] ?? [];
       this.form.text = this.editPost.text ?? '';
       this.form.image = this.editPost.image ?? '';
       if (this.editPost.image) {
@@ -150,7 +150,8 @@ export default class NewPostModalContainer extends Vue {
       }
 
       if (this.editPost) {
-        if (this.form.image === this.editPost.image) {
+        const isPreviousImage = (this.form.image === this.editPost.image);
+        if (isPreviousImage) {
           post.image = this.editPost.image;
         }
         const update: UpdatePost = await this.$store.dispatch('backend/updatePost', {
@@ -158,7 +159,7 @@ export default class NewPostModalContainer extends Vue {
           post: post
         });
         if (update.success) {
-          if (post.image) {
+          if (isPreviousImage || nullOrEmpty(post.image as string)) {
             this.hideModal();
             return;
           }
