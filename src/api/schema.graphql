@@ -5,6 +5,12 @@ schema {
     mutation: Mutation
 }
 
+type CategoryFormMutationPayload {
+    category: CategoryType
+    clientMutationId: String
+    errors: [ErrorType]
+}
+
 type CategoryType {
     id: ID!
     name: String!
@@ -12,13 +18,24 @@ type CategoryType {
 }
 
 type CreatePost {
-    data: PostType
-    errors: [String]
+    errors: GraphqlError
+    formData: PostType
     success: Boolean
 }
 
 type DeleteJSONWebTokenCookie {
     deleted: Boolean!
+}
+
+type ErrorType {
+    field: String!
+    messages: [String!]!
+}
+
+type KeywordFormMutationPayload {
+    clientMutationId: String
+    errors: [ErrorType]
+    keyword: CategoryType
 }
 
 type KeywordType {
@@ -28,13 +45,27 @@ type KeywordType {
 }
 
 type Mutation {
-    createPost(input: PostInput!): CreatePost
+    "Create a new Category"
+    createCategory(input: CategoryFormMutationInput!): CategoryFormMutationPayload
+    "Create a new Keyword"
+    createKeyword(input: KeywordFormMutationInput!): KeywordFormMutationPayload
+    "Create a new Post for logged in User"
+    createPost(post: PostInput!): CreatePost
+    "Revoke a JWT Token"
     deleteToken: DeleteJSONWebTokenCookie
+    "Obtain Refresh JWT Token"
     refreshToken(token: String): Refresh
-    "Obtain JSON Web Token mutation"
+    "Obtain new JWT Token"
     tokenAuth(password: String!, username: String!): ObtainJSONWebToken
-    updatePost(id: ID!, input: PostInput!): UpdatePost
+    "Update Category by Id"
+    updateCategory(input: CategoryFormMutationInput!): CategoryFormMutationPayload
+    "Update Keyword by Id"
+    updateKeyword(input: KeywordFormMutationInput!): KeywordFormMutationPayload
+    "Update Users Post by Id"
+    updatePost(id: ID!, post: PostInput!): UpdatePost
+    "Upload Image for Users Post"
     uploadPostImage(id: ID!, image: Upload!): UploadPostImage
+    "Verify a JWT Token"
     verifyToken(token: String): Verify
 }
 
@@ -76,8 +107,8 @@ type Refresh {
 }
 
 type UpdatePost {
-    data: PostType
-    errors: [String]
+    errors: GraphqlError
+    formData: PostType
     success: Boolean
 }
 
@@ -117,13 +148,53 @@ scalar GenericScalar
 
 """
 
+Errors messages and codes mapped to
+fields or non fields errors.
+Example:
+{
+field_name: [
+{
+"message": "error message",
+"code": "error_code"
+}
+],
+other_field: [
+{
+"message": "error message",
+"code": "error_code"
+}
+],
+nonFieldErrors: [
+{
+"message": "error message",
+"code": "error_code"
+}
+]
+}
+"""
+scalar GraphqlError
+
+"""
+
 Create scalar that ignores normal serialization/deserialization, since
 that will be handled by the multipart request spec
 """
 scalar Upload
 
+input CategoryFormMutationInput {
+    clientMutationId: String
+    id: ID
+    name: String!
+}
+
+input KeywordFormMutationInput {
+    clientMutationId: String
+    id: ID
+    name: String!
+}
+
 input PostInput {
-    categoryId: ID
+    category: ID
     image: String
     keywords: [ID]
     name: String

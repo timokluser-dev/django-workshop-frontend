@@ -23,10 +23,49 @@ export type Scalars = {
    */
   GenericScalar: any;
   /**
+   * Errors messages and codes mapped to
+   * fields or non fields errors.
+   * Example:
+   * {
+   * field_name: [
+   * {
+   * "message": "error message",
+   * "code": "error_code"
+   * }
+   * ],
+   * other_field: [
+   * {
+   * "message": "error message",
+   * "code": "error_code"
+   * }
+   * ],
+   * nonFieldErrors: [
+   * {
+   * "message": "error message",
+   * "code": "error_code"
+   * }
+   * ]
+   * }
+   */
+  GraphqlError: any;
+  /**
    * Create scalar that ignores normal serialization/deserialization, since
    * that will be handled by the multipart request spec
    */
   Upload: any;
+};
+
+export type CategoryFormMutationInput = {
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  name: Scalars['String'];
+};
+
+export type CategoryFormMutationPayload = {
+  __typename?: 'CategoryFormMutationPayload';
+  category?: Maybe<CategoryType>;
+  clientMutationId?: Maybe<Scalars['String']>;
+  errors?: Maybe<Array<Maybe<ErrorType>>>;
 };
 
 export type CategoryType = {
@@ -38,14 +77,33 @@ export type CategoryType = {
 
 export type CreatePost = {
   __typename?: 'CreatePost';
-  data?: Maybe<PostType>;
-  errors?: Maybe<Array<Maybe<Scalars['String']>>>;
+  errors?: Maybe<Scalars['GraphqlError']>;
+  formData?: Maybe<PostType>;
   success?: Maybe<Scalars['Boolean']>;
 };
 
 export type DeleteJsonWebTokenCookie = {
   __typename?: 'DeleteJSONWebTokenCookie';
   deleted: Scalars['Boolean'];
+};
+
+export type ErrorType = {
+  __typename?: 'ErrorType';
+  field: Scalars['String'];
+  messages: Array<Scalars['String']>;
+};
+
+export type KeywordFormMutationInput = {
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  name: Scalars['String'];
+};
+
+export type KeywordFormMutationPayload = {
+  __typename?: 'KeywordFormMutationPayload';
+  clientMutationId?: Maybe<Scalars['String']>;
+  errors?: Maybe<Array<Maybe<ErrorType>>>;
+  keyword?: Maybe<CategoryType>;
 };
 
 export type KeywordType = {
@@ -57,19 +115,43 @@ export type KeywordType = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  /** Create a new Category */
+  createCategory?: Maybe<CategoryFormMutationPayload>;
+  /** Create a new Keyword */
+  createKeyword?: Maybe<KeywordFormMutationPayload>;
+  /** Create a new Post for logged in User */
   createPost?: Maybe<CreatePost>;
+  /** Revoke a JWT Token */
   deleteToken?: Maybe<DeleteJsonWebTokenCookie>;
+  /** Obtain Refresh JWT Token */
   refreshToken?: Maybe<Refresh>;
-  /** Obtain JSON Web Token mutation */
+  /** Obtain new JWT Token */
   tokenAuth?: Maybe<ObtainJsonWebToken>;
+  /** Update Category by Id */
+  updateCategory?: Maybe<CategoryFormMutationPayload>;
+  /** Update Keyword by Id */
+  updateKeyword?: Maybe<KeywordFormMutationPayload>;
+  /** Update Users Post by Id */
   updatePost?: Maybe<UpdatePost>;
+  /** Upload Image for Users Post */
   uploadPostImage?: Maybe<UploadPostImage>;
+  /** Verify a JWT Token */
   verifyToken?: Maybe<Verify>;
 };
 
 
+export type MutationCreateCategoryArgs = {
+  input: CategoryFormMutationInput;
+};
+
+
+export type MutationCreateKeywordArgs = {
+  input: KeywordFormMutationInput;
+};
+
+
 export type MutationCreatePostArgs = {
-  input: PostInput;
+  post: PostInput;
 };
 
 
@@ -84,9 +166,19 @@ export type MutationTokenAuthArgs = {
 };
 
 
+export type MutationUpdateCategoryArgs = {
+  input: CategoryFormMutationInput;
+};
+
+
+export type MutationUpdateKeywordArgs = {
+  input: KeywordFormMutationInput;
+};
+
+
 export type MutationUpdatePostArgs = {
   id: Scalars['ID'];
-  input: PostInput;
+  post: PostInput;
 };
 
 
@@ -109,7 +201,7 @@ export type ObtainJsonWebToken = {
 };
 
 export type PostInput = {
-  categoryId?: InputMaybe<Scalars['ID']>;
+  category?: InputMaybe<Scalars['ID']>;
   image?: InputMaybe<Scalars['String']>;
   keywords?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   name?: InputMaybe<Scalars['String']>;
@@ -177,8 +269,8 @@ export type Refresh = {
 
 export type UpdatePost = {
   __typename?: 'UpdatePost';
-  data?: Maybe<PostType>;
-  errors?: Maybe<Array<Maybe<Scalars['String']>>>;
+  errors?: Maybe<Scalars['GraphqlError']>;
+  formData?: Maybe<PostType>;
   success?: Maybe<Scalars['Boolean']>;
 };
 
