@@ -145,7 +145,7 @@ export default class NewPostModalContainer extends Vue {
       const post: PostInput = {
         name: this.form.title ?? '',
         text: this.form.text ?? '',
-        categoryId: this.form.category ?? '',
+        category: this.form.category ?? '',
         keywords: this.form.keywords,
       }
 
@@ -164,7 +164,7 @@ export default class NewPostModalContainer extends Vue {
             return;
           }
           this.$store.dispatch('backend/uploadPostImage', {
-            id: update.data?.id,
+            id: update.formData?.id,
             image: this.form.image
           }).then(
               () => {
@@ -184,7 +184,7 @@ export default class NewPostModalContainer extends Vue {
             return;
           }
           this.$store.dispatch('backend/uploadPostImage', {
-            id: create.data?.id,
+            id: create.formData?.id,
             image: this.form.image
           }).then(
               () => {
