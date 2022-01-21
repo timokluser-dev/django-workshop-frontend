@@ -1,8 +1,8 @@
 mutation UpdatePostMutation($id: ID!, $post: PostInput!) {
-    updatePost(id: $id, input: $post) {
+    updatePost(id: $id, post: $post) {
         success
         errors
-        data {
+        formData {
             id
             image
         }

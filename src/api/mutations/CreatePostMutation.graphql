@@ -1,8 +1,8 @@
 mutation CreatePostMutation($post: PostInput!) {
-    createPost(input: $post) {
+    createPost(post: $post) {
         success
         errors
-        data {
+        formData {
             id
         }
     }
