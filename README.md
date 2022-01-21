@@ -1,5 +1,7 @@
 # django-workshop-frontend
 
+:arrow_right: Backend: [timokluser-dev/django-workshop](https://github.com/timokluser-dev/django-workshop)
+
 ## Project setup
 
 ```
